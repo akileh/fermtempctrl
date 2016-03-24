@@ -35,9 +35,9 @@ DallasTemperature sensors(&oneWire);
 double targetTemperature = 20.0;
 double currentTemperature;
 double output;
-double p = 9;
-double i = 500;
-double d = 10;
+double p = 5;
+double i = 2;
+double d = 0;
 PID myPID(&currentTemperature, &output, &targetTemperature, p, i, d, PID::DIRECT);
 
 String pid;
@@ -75,7 +75,6 @@ void setup() {
     sensors.begin();
     myPID.SetOutputLimits(0, windowLength);
     myPID.SetMode(PID::AUTOMATIC);
-    myPID.SetSampleTime(temperatureLoopDelay * 1000);
     Particle.variable("debug", debug);
     Particle.variable("eeprom", eepromDefaults);
     Particle.variable("nexa", nexaControllerId);
@@ -95,6 +94,9 @@ void setup() {
 void loop() {
     sensors.requestTemperatures();
     currentTemperature = sensors.getTempCByIndex(0);
+    if(currentTemperature != -127) {
+        myPID.Compute();
+    }
 
     now = Time.now();
     if(now > lastTime + temperatureLoopDelay) {
@@ -108,7 +110,6 @@ void loop() {
         lastStatus = String(status) + "," + String(currentTemperature) + "," + String(targetTemperature) + "," + String(controlled) + "," + String(transmitterPaired) + "," + Time.now() + "000";
         Particle.publish("status", lastStatus, EVENT_TTL, PRIVATE);
 
-        myPID.Compute();
         Particle.publish("loop", String(output) + ", " + String(windowLocation), EVENT_TTL, PRIVATE);
         
         // turn cooling device off if not controlled or paired
@@ -135,6 +136,8 @@ void none() {
     Particle.publish("debug", "idling");
     status = STATUS_NONE;
     deviceOff();
+    lastHeat = Time.now();
+    lastCool = Time.now();
 }
 
 void heat() {
@@ -218,6 +221,7 @@ int setPid(String newPid) {
     EEPROM.put(EEPROM_KI, i);
     EEPROM.put(EEPROM_KD, d);
     pid = String(p) + "," + String(i) + "," + String(d);
+    myPID.SetTunings(p, i, d);
     return 1;
 }
 

@@ -27,12 +27,14 @@ export default function apiRouter() {
     knex('temperatures')
       .where('createdAt', '>', from)
       .andWhere('createdAt', '<', to)
-      .then(temperatures => res.json(temperatures.map(temperature => Object.assign(
+      .then(temperatures => temperatures.map(temperature => Object.assign(
         temperature, {
           controlled: !!temperature.controlled,
           createdAt: parseInt(temperature.createdAt, 10)
         })
-      )))
+      ))
+      .then(temperatures => temperatures.sort((a, b) => a.createdAt < b.createdAt ? -1 : 1))
+      .then(temperatures => res.json(temperatures))
       .catch(next)
   })
 

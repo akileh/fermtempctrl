@@ -6,6 +6,13 @@ import Error from './error'
 import DropDownMenu from 'material-ui/lib/DropDownMenu'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import Loading from './loading'
+import Highcharts from 'highcharts'
+
+Highcharts.setOptions({
+  global: {
+    useUTC: false
+  }
+})
 
 class Chart extends React.Component {
   constructor(props) {
@@ -25,6 +32,11 @@ class Chart extends React.Component {
   getTemperatures(from, to = Date.now()) {
     const now = Date.now()
     switch (from) {
+      case 'hours':
+        return this.props.getTemperatures({
+          from: now - 6 * 60 * 60 * 1000,
+          to
+        })
       case 'day':
         return this.props.getTemperatures({
           from: now - 24 * 60 * 60 * 1000,
@@ -53,10 +65,28 @@ class Chart extends React.Component {
       return <Error message='Failed to retrieve temperatures' />
     }
 
+    const temperatures = this.props.temperatures.data
+    const temperatureReadings = temperatures.map(({ temperature }) => temperature)
+    const minTemperature = Math.min(...temperatureReadings) - 2
+    const maxTemperature = Math.max(...temperatureReadings) + 1
+
+    // add empty data poins between too large intervals to make highchart not connect series between those points
+    const missing = []
+    this.props.temperatures.data.forEach((temperature, index) => {
+      const nextTemperature = temperatures.length > index + 1 ? temperatures[index + 1] : null
+      if (nextTemperature && nextTemperature.createdAt > temperature.createdAt + 5 * 60 * 1000) {
+        missing.push({
+          createdAt: temperature.createdAt + 1000
+        })
+      }
+    })
+    const temperaturesWithMissingData = temperatures.concat(missing).sort((a, b) => a.createdAt < b.createdAt ? -1 : 1)
+
     const config = {
       chart: {
-        type: 'area',
-        zoomType: 'x'
+        zoomType: 'x',
+        spacingLeft: 0,
+        spacingRight: 0
       },
       title: {
         text: false
@@ -70,15 +100,58 @@ class Chart extends React.Component {
         },
         labels: {
           format: '{value} °C'
-        }
+        },
+        tickInterval: 1,
+        allowDecimals: false,
+        startOnTick: false,
+        min: minTemperature,
+        max: maxTemperature
       },
-      series: [{
-        name: 'Temperature',
-        turboThreshold: 1,
-        data: this.props.temperatures.data.map(({ createdAt, temperature }) => {
-          return [createdAt, parseFloat(temperature.toFixed(1))]
-        })
-      }]
+      series: [
+        {
+          name: 'Target',
+          type: 'area',
+          fillOpacity: 0.5,
+          turboThreshold: 1,
+          color: '#90A4AE',
+          data: temperatures.map(({ createdAt, targetTemperature }) => {
+            return [createdAt, parseFloat(targetTemperature.toFixed(1))]
+          })
+        },
+        {
+          name: 'Actual',
+          type: 'area',
+          fillOpacity: 0.5,
+          turboThreshold: 1,
+          color: '#FFD54F',
+          data: temperaturesWithMissingData.map(({ createdAt, temperature }) => {
+            return [createdAt, temperature ? parseFloat(temperature.toFixed(1)) : null]
+          })
+        },
+        {
+          name: 'Controlled',
+          type: 'line',
+          turboThreshold: 1,
+          color: '#81C784',
+          linecap: 'square',
+          lineWidth: 5,
+          data: temperatures
+          .map(({ createdAt, controlled }) => {
+            return [createdAt, controlled ? maxTemperature : null]
+          })
+        },
+        {
+          name: 'Cooling',
+          type: 'line',
+          turboThreshold: 1,
+          color: '#4FC3F7',
+          linecap: 'square',
+          lineWidth: 20,
+          data: temperatures.map(({ createdAt, status }) => {
+            return [createdAt, status === 2 ? minTemperature : null]
+          })
+        }
+      ]
     }
 
     return (
@@ -89,6 +162,10 @@ class Chart extends React.Component {
             onChange={(event, index, value) => this.onDateRangeChange(value)}
             style={{ minWidth: 100 }}
             >
+            <MenuItem
+              value={'hours'}
+              primaryText='6 Hours'
+              />
             <MenuItem
               value={'day'}
               primaryText='Day'

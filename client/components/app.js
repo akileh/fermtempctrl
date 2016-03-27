@@ -8,6 +8,8 @@ import IconTransmitter from 'material-ui/lib/svg-icons/action/settings-remote'
 import IconParticle from 'material-ui/lib/svg-icons/hardware/memory'
 import IconPid from 'material-ui/lib/svg-icons/image/tune'
 import IconChart from 'material-ui/lib/svg-icons/action/timeline'
+import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider'
+import theme from '../theme'
 
 const routes = [
   {
@@ -44,27 +46,29 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
-        <LeftNav
-          open={this.props.leftNavOpen}
-          docked={false}
-          onRequestChange={this.props.toggleLeftNav}
-          >
-          <List>
-          {routes.map(route => {
-            return (
-              <ListItem
-                primaryText={route.title}
-                key={route.title}
-                leftIcon={route.icon}
-                onTouchTap={() => this.selectItem(route.path) }
-                />
-            )
-          })}
-          </List>
-        </LeftNav>
-        <div>{this.props.children}</div>
-      </div>
+      <MuiThemeProvider muiTheme={theme}>
+        <div>
+          <LeftNav
+            open={this.props.leftNavOpen}
+            docked={false}
+            onRequestChange={this.props.toggleLeftNav}
+            >
+            <List>
+            {routes.map(route => {
+              return (
+                <ListItem
+                  primaryText={route.title}
+                  key={route.title}
+                  leftIcon={route.icon}
+                  onTouchTap={() => this.selectItem(route.path) }
+                  />
+              )
+            })}
+            </List>
+          </LeftNav>
+          <div>{this.props.children}</div>
+        </div>
+      </MuiThemeProvider>
     )
   }
 }

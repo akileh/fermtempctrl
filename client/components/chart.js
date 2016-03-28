@@ -91,6 +91,10 @@ class Chart extends React.Component {
       title: {
         text: false
       },
+      tooltip: {
+        shared: true,
+        valueDecimals: 1
+      },
       xAxis: {
         type: 'datetime'
       },
@@ -132,6 +136,7 @@ class Chart extends React.Component {
           name: 'Controlled',
           type: 'line',
           turboThreshold: 1,
+          enableMouseTracking: false,
           color: '#81C784',
           linecap: 'square',
           lineWidth: 5,
@@ -144,6 +149,7 @@ class Chart extends React.Component {
           name: 'Cooling',
           type: 'line',
           turboThreshold: 1,
+          enableMouseTracking: false,
           color: '#4FC3F7',
           linecap: 'square',
           lineWidth: 20,

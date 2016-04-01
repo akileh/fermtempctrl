@@ -15,6 +15,7 @@ export default (
       <Route path='/' component={AppContainer}>
         <IndexRoute component={StatusContainer} />
         <Route path='chart' component={ChartContainer} />
+        <Route path='chart/:type/:count' component={ChartContainer} />
         <Route path='pid' component={PidContainer} />
         <Route path='transmitter' component={TransmitterContainer} />
         <Route path='particle' component={AuthenticationContainer} />

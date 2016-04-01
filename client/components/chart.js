@@ -7,6 +7,7 @@ import DropDownMenu from 'material-ui/lib/DropDownMenu'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import Loading from './loading'
 import Highcharts from 'highcharts'
+import { browserHistory } from 'react-router'
 
 Highcharts.setOptions({
   global: {
@@ -18,42 +19,60 @@ class Chart extends React.Component {
   constructor(props) {
     super(props)
     this.getTemperatures = this.getTemperatures.bind(this)
-    this.getTemperatures('day')
     this.state = {
-      dateRange: 'day'
+      type: this.props.params.type || 'day'
+    }
+    this.getTemperatures({
+      type: this.state.type,
+      count: this.props.params.count || 1
+    })
+  }
+  shouldComponentUpdate(nextProps) {
+    if (this.props.params.type !== nextProps.params.type ||
+        this.props.params.count !== nextProps.params.count ||
+        this.props.temperatures.loading !== nextProps.temperatures.loading ||
+        this.props.temperatures.error !== nextProps.temperatures.error) {
+      return true
+    }
+    else {
+      return false
     }
   }
-  onDateRangeChange(value) {
-    if (this.state.dateRange !== value) {
-      this.setState({ dateRange: value })
-      this.getTemperatures(value)
+  onDateRangeChange(type, count) {
+    if (this.state.type !== type) {
+      this.setState({
+        type,
+        count
+      })
+      this.getTemperatures({ type, count })
     }
   }
-  getTemperatures(from, to = Date.now()) {
+  getTemperatures({ type = 'hour', count = 1 }) {
+    browserHistory.replace(`/chart/${type}/${count}`)
     const now = Date.now()
-    switch (from) {
-      case 'hours':
+    const to = now
+    switch (type) {
+      default:
+      case 'hour':
         return this.props.getTemperatures({
-          from: now - 6 * 60 * 60 * 1000,
+          from: now - count * 60 * 60 * 1000,
           to
         })
       case 'day':
         return this.props.getTemperatures({
-          from: now - 24 * 60 * 60 * 1000,
+          from: now - count * 24 * 60 * 60 * 1000,
           to
         })
       case 'week':
         return this.props.getTemperatures({
-          from: now - 7 * 24 * 60 * 60 * 1000,
+          from: now - count * 7 * 24 * 60 * 60 * 1000,
           to
         })
       case 'month':
         return this.props.getTemperatures({
-          from: now - 30 * 24 * 60 * 60 * 1000,
+          from: now - count * 30 * 24 * 60 * 60 * 1000,
           to
         })
-      default:
-        return this.props.getTemperatures({ from, to })
     }
   }
   renderContent() {
@@ -164,13 +183,13 @@ class Chart extends React.Component {
       <div>
         <div style={{ textAlign: 'center' }}>
           <DropDownMenu
-            value={this.state.dateRange}
-            onChange={(event, index, value) => this.onDateRangeChange(value)}
+            value={this.state.type}
+            onChange={(event, index, value) => this.onDateRangeChange(value, 1)}
             style={{ minWidth: 100 }}
             >
             <MenuItem
-              value={'hours'}
-              primaryText='6 Hours'
+              value={'hour'}
+              primaryText='Hour'
               />
             <MenuItem
               value={'day'}
@@ -216,7 +235,11 @@ Chart.propTypes = {
     loading: React.PropTypes.bool,
     error: React.PropTypes.any
   }),
-  getTemperatures: React.PropTypes.func
+  getTemperatures: React.PropTypes.func,
+  params: React.PropTypes.shape({
+    type: React.PropTypes.string,
+    count: React.PropTypes.count
+  })
 }
 
 export default Chart

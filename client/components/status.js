@@ -162,11 +162,15 @@ class Status extends React.Component {
       subtitle = '\u00a0'
     }
     else {
-      title = isStatusStale ? 'Waiting for up to date data..' : `Status: ${STATUS[this.props.status.status]}`
       if (isStatusStale) {
+        title = 'Waiting for up to date data..'
         subtitle = moment(createdAt).format('YYYY-MM-DD HH:mm:ss')
       }
       else {
+        title = `Status: ${STATUS[this.props.status.status]}`
+        if (this.props.status.tuning) {
+          title += ' (autotuning)'
+        }
         const diff = now - createdAt
         if (diff < 10000) {
           subtitle = 'Just now'
@@ -265,6 +269,7 @@ Status.propTypes = {
     loading: React.PropTypes.bool,
     error: React.PropTypes.any,
     status: React.PropTypes.number,
+    tuning: React.PropTypes.tuning,
     temperature: React.PropTypes.string,
     createdAt: React.PropTypes.number,
     targetTemperature: React.PropTypes.string,

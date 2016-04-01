@@ -53,7 +53,8 @@ export function parseStatus(status) {
     sTargetTemperature,
     sControlled,
     sTransmitterPaired,
-    sTimestamp
+    sTimestamp,
+    sTuning
   ] = status.split(',')
 
   return {
@@ -62,6 +63,7 @@ export function parseStatus(status) {
     status: parseInt(sStatus, 10),
     controlled: sControlled === '1',
     transmitterPaired: sTransmitterPaired === '1',
-    createdAt: parseInt(sTimestamp, 10)
+    createdAt: parseInt(sTimestamp, 10),
+    tuning: sTuning === '1'
   }
 }

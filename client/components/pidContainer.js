@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import Pid from './pid'
 import { getPid, setPid } from '../actions/pid'
+import { setAutotune } from '../actions/autotune'
 
 const mapStateToProps = ({ pid }) => {
   return { pid }
@@ -9,7 +10,8 @@ const mapStateToProps = ({ pid }) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   getPid,
-  setPid
+  setPid,
+  setAutotune
 }, dispatch)
 
 const PidContainer = connect(

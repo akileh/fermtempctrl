@@ -24,33 +24,45 @@ class Pid extends React.Component {
     }
 
     if (this.props.pid.error) {
-      return <Error message='Failed to retrieve pid' />
+      return <Error message='Failed to set/get pid/autotune' />
     }
 
     return (
       <div>
         <TextField
           floatingLabelText='P'
+          disabled={this.props.pid.tuning}
           ref='p'
           fullWidth
           defaultValue={this.props.pid.p}
           />
         <TextField
           floatingLabelText='I'
+          disabled={this.props.pid.tuning}
           ref='i'
           fullWidth
           defaultValue={this.props.pid.i}
           />
         <TextField
           floatingLabelText='D'
+          disabled={this.props.pid.tuning}
           ref='d'
           fullWidth
           defaultValue={this.props.pid.d}
           />
         <RaisedButton
           label='Save'
+          disabled={this.props.pid.tuning}
           primary
           onClick={() => this.setPid()}
+          fullWidth
+          />
+        <br />
+        <br />
+        <RaisedButton
+          label={this.props.pid.tuning ? 'Stop autotune' : 'Start autotune'}
+          primary
+          onClick={() => this.props.setAutotune(this.props.pid.tuning ? 'off' : 'on')}
           fullWidth
           />
       </div>
@@ -74,10 +86,12 @@ Pid.propTypes = {
     error: React.PropTypes.any,
     p: React.PropTypes.number,
     i: React.PropTypes.number,
-    d: React.PropTypes.number
+    d: React.PropTypes.number,
+    tuning: React.PropTypes.bool
   }),
   getPid: React.PropTypes.func,
-  setPid: React.PropTypes.func
+  setPid: React.PropTypes.func,
+  setAutotune: React.PropTypes.func
 }
 
 export default Pid

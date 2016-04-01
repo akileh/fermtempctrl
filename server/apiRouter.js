@@ -77,10 +77,13 @@ export default function apiRouter() {
   router.get('/api/pid', (req, res, next) => {
     getVariable('pid')
       .then(pid => {
-        const [p, i, d] = pid
-          .split(',')
-          .map(parseFloat)
-        res.json({ p, i, d })
+        const [p, i, d, tuning] = pid.split(',')
+        res.json({
+          p: parseFloat(p),
+          i: parseFloat(i),
+          d: parseFloat(d),
+          tuning: parseInt(tuning, 10) === 1
+        })
       })
       .catch(next)
   })
@@ -89,6 +92,13 @@ export default function apiRouter() {
     const { p, i, d } = req.body
     callFunction('pid', `{p:${p},i:${i},d:${d}}`)
       .then(() => res.json(req.body))
+      .catch(next)
+  })
+
+  router.post('/api/pid/autotune/:state', (req, res, next) => {
+    const { state } = req.params
+    callFunction('autotune', state)
+      .then(() => res.json({ tuning: state === 'on' }))
       .catch(next)
   })
 

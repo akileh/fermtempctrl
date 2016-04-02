@@ -112,7 +112,7 @@ class Chart extends React.Component {
       },
       tooltip: {
         shared: true,
-        valueDecimals: 1
+        valueDecimals: 2
       },
       xAxis: {
         type: 'datetime'
@@ -138,7 +138,7 @@ class Chart extends React.Component {
           turboThreshold: 1,
           color: '#90A4AE',
           data: temperatures.map(({ createdAt, targetTemperature }) => {
-            return [createdAt, parseFloat(targetTemperature.toFixed(1))]
+            return [createdAt, parseFloat(targetTemperature)]
           })
         },
         {
@@ -148,7 +148,7 @@ class Chart extends React.Component {
           turboThreshold: 1,
           color: '#FFD54F',
           data: temperaturesWithMissingData.map(({ createdAt, temperature }) => {
-            return [createdAt, temperature ? parseFloat(temperature.toFixed(1)) : null]
+            return [createdAt, temperature ? parseFloat(temperature) : null]
           })
         },
         {

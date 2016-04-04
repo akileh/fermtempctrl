@@ -85,7 +85,10 @@ class Chart extends React.Component {
     }
 
     const temperatures = this.props.temperatures.data
-    const temperatureReadings = temperatures.map(({ temperature }) => temperature)
+    // flatten all possible min/max values
+    const temperatureReadings = [].concat.apply([],
+      temperatures.map(({ temperature, targetTemperature }) => [temperature, targetTemperature])
+    )
     const minTemperature = Math.min(...temperatureReadings) - 2
     const maxTemperature = Math.max(...temperatureReadings) + 1
 
@@ -159,8 +162,7 @@ class Chart extends React.Component {
           color: '#81C784',
           linecap: 'square',
           lineWidth: 5,
-          data: temperatures
-          .map(({ createdAt, controlled }) => {
+          data: temperatures.map(({ createdAt, controlled }) => {
             return [createdAt, controlled ? maxTemperature : null]
           })
         },

@@ -1,8 +1,8 @@
 import express from 'express'
 import cacheControl from './cacheControl'
 import knex from './db'
-import { getVariable, callFunction, parseStatus } from './particle'
 import { getConfig, updateConfig } from './db'
+import { authenticate, getVariable, callFunction, parseStatus, listDevices } from './particle'
 
 function configToJson(config) {
   return {
@@ -102,7 +102,7 @@ export default function apiRouter() {
       .catch(next)
   })
 
-  router.get('/api/device', (req, res, next) => {
+  router.get('/api/state', (req, res, next) => {
     return Promise.all([
       getVariable('controlled'),
       getVariable('targetTemp')
@@ -116,7 +116,7 @@ export default function apiRouter() {
     .catch(next)
   })
 
-  router.post('/api/device', (req, res, next) => {
+  router.post('/api/state', (req, res, next) => {
     const { controlled, targetTemperature } = req.body
     return Promise.all([
       typeof controlled !== 'undefined'
@@ -143,9 +143,51 @@ export default function apiRouter() {
   })
 
   router.post('/api/authentication', (req, res, next) => {
-    updateConfig(req.body)
+    const { accessToken, username, password } = req.body
+    authenticate({ accessToken, username, password })
+      .then(verifiedAccessToken => updateConfig({ particleAccessToken: verifiedAccessToken }))
       .then(configToJson)
       .then(json => res.json(json))
+      .catch(next)
+  })
+
+  router.delete('/api/authentication', (req, res, next) => {
+    updateConfig(
+      {
+        particleDeviceName: null,
+        particleAccessToken: null
+      })
+      .then(configToJson)
+      .then(json => res.json(json))
+      .catch(next)
+  })
+
+  router.get('/api/device', (req, res, next) => {
+    listDevices()
+      .then(devices => res.json(devices))
+      .catch(next)
+  })
+
+  router.delete('/api/device', (req, res, next) => {
+    updateConfig({ particleDeviceName: null })
+      .then(configToJson)
+      .then(json => res.json(json))
+      .catch(next)
+  })
+
+  router.post('/api/device', (req, res, next) => {
+    listDevices()
+      .then(devices => devices.find(device => device === req.body.device))
+      .then(device => {
+        if (!device) {
+          throw new Error('device not found')
+        }
+        else {
+          return updateConfig({ particleDeviceName: device })
+            .then(() => device)
+        }
+      })
+      .then(device => res.json({ particleDeviceName: device }))
       .catch(next)
   })
 

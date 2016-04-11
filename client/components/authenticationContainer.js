@@ -12,10 +12,10 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setAuthentication
 }, dispatch)
 
-const AppContainer = connect(
+const AuthenticationContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Authentication)
 
-export default AppContainer
+export default AuthenticationContainer
 

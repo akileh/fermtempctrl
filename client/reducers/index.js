@@ -8,6 +8,7 @@ import targetTemperature from './targetTemperature'
 import pid from './pid'
 import transmitter from './transmitter'
 import temperatures from './temperatures'
+import devices from './devices'
 
 export default combineReducers({
   status,
@@ -18,5 +19,6 @@ export default combineReducers({
   targetTemperature,
   pid,
   transmitter,
-  temperatures
+  temperatures,
+  devices
 })

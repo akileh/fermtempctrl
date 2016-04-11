@@ -7,7 +7,7 @@ export const SET_CONTROLLED_ERROR = 'SET_CONTROLLED_ERROR'
 export function setControlled(controlled) {
   return dispatch => {
     dispatch({ type: SET_CONTROLLED })
-    return fetch('/api/device',
+    return fetch('/api/state',
       {
         method: 'post',
         body: JSON.stringify({ controlled })

@@ -1,5 +1,4 @@
 import fetch from '../fetch'
-import { browserHistory } from 'react-router'
 
 export const GET_AUTHENTICATION = 'GET_AUTHENTICATION'
 export const GET_AUTHENTICATION_SUCCESS = 'GET_AUTHENTICATION_SUCCESS'
@@ -37,8 +36,8 @@ export function setAuthentication(authentication) {
     dispatch({ type: SET_AUTHENTICATION })
     return fetch('/api/authentication',
       {
-        method: 'post',
-        body: JSON.stringify(authentication)
+        method: authentication ? 'post' : 'delete',
+        body: authentication ? JSON.stringify(authentication) : null
       })
       .then(res => res.json())
       .then(json => {
@@ -46,9 +45,6 @@ export function setAuthentication(authentication) {
           type: SET_AUTHENTICATION_SUCCESS,
           state: json
         })
-        if (json.particleDeviceName) {
-          browserHistory.push('/')
-        }
       })
       .catch(() => {
         dispatch({

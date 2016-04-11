@@ -5,13 +5,14 @@ import TextField from 'material-ui/lib/text-field'
 class Unauthenticated extends React.Component {
   constructor(props) {
     super(props)
-    this.sendAuthentication = this.sendAuthentication.bind(this)
+    this.setAuthentication = this.setAuthentication.bind(this)
   }
-  sendAuthentication(event) {
+  setAuthentication(event) {
     if (!event || !event.keyCode || event.keyCode === 13) {
       this.props.setAuthentication({
-        particleAccessToken: this.refs.accessToken.getValue().trim(),
-        particleDeviceName: this.refs.deviceName.getValue().trim()
+        accessToken: this.refs.accessToken.getValue().trim(),
+        username: this.refs.username.getValue().trim(),
+        password: this.refs.password.getValue().trim()
       })
     }
   }
@@ -19,23 +20,31 @@ class Unauthenticated extends React.Component {
     return (
       <div>
         <TextField
-          autoFocus
-          floatingLabelText={'Device name'}
-          ref='deviceName'
-          fullWidth
-          onKeyDown={event => this.sendAuthentication(event)}
-          />
-        <TextField
           floatingLabelText={'Access token'}
           ref='accessToken'
           type='password'
           fullWidth
-          onKeyDown={event => this.sendAuthentication(event)}
+          onKeyDown={event => this.setAuthentication(event)}
+          />
+        <p style={{ textAlign: 'center' }}>Or</p>
+        <TextField
+          floatingLabelText={'Username'}
+          ref='username'
+          type='text'
+          fullWidth
+          onKeyDown={event => this.setAuthentication(event)}
+          />
+        <TextField
+          floatingLabelText={'Password'}
+          ref='password'
+          type='password'
+          fullWidth
+          onKeyDown={event => this.setAuthentication(event)}
           />
         <RaisedButton
-          label='Save device'
+          label='Save'
           primary
-          onClick={this.sendAuthentication}
+          onClick={this.setAuthentication}
           fullWidth
           />
       </div>

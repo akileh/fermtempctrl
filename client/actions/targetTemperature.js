@@ -7,7 +7,7 @@ export const SET_TARGET_TEMPERATURE_ERROR = 'SET_TARGET_TEMPERATURE_ERROR'
 export function setTargetTemperature(targetTemperature) {
   return dispatch => {
     dispatch({ type: SET_TARGET_TEMPERATURE })
-    return fetch('/api/device',
+    return fetch('/api/state',
       {
         method: 'post',
         body: JSON.stringify({ targetTemperature })

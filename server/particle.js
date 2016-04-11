@@ -7,7 +7,7 @@ export default particle
 function getAuth() {
   return getConfig()
     .then(config => {
-      if (!config.particleDeviceName || !config.particleAccessToken) {
+      if (!config.particleAccessToken) {
         throw Error('particle api call failed: particle accessToken and/or deviceId not set')
       }
       else {
@@ -17,6 +17,39 @@ function getAuth() {
         }
       }
     })
+}
+
+function authenticateAccessToken(auth) {
+  return particle
+    .listDevices({ auth })
+    .then(() => {
+      return auth
+    })
+}
+
+function getAccessToken(username, password) {
+  return particle
+    .listAccessTokens({ username, password })
+    .then(res => res.body ? res.body : new Error('invalid accessTokens response'))
+    .then(accessTokens => accessTokens.find(accessToken => accessToken.client === 'user'))
+    .then(accessToken => accessToken.token)
+}
+
+export function authenticate({ accessToken, username, password }) {
+  if (accessToken) {
+    return authenticateAccessToken(accessToken)
+  }
+  else {
+    return getAccessToken(username, password)
+      .then(authenticateAccessToken)
+  }
+}
+
+export function listDevices() {
+  return getAuth()
+    .then(auth => particle.listDevices(auth))
+    .then(res => res.body)
+    .then(devices => devices.map(device => device.name))
 }
 
 export function getVariable(name) {

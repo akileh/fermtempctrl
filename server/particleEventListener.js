@@ -7,6 +7,7 @@ const MIN_EVENT_INTERVAL = 60000
 
 let stream
 let lastEvent = Date.now()
+let restartTimeout
 
 function status(event) {
   try {
@@ -21,31 +22,38 @@ function status(event) {
 }
 
 function start() {
+  clearTimeout(restartTimeout)
   if (stream) {
     stream.abort()
   }
+  getConfig()
+    .then(config => {
+      if (!config.particleDeviceName) {
+        restart() // eslint-disable-line no-use-before-define
+      }
+      else {
+        startEventStream() // eslint-disable-line no-use-before-define
+      }
+    })
+}
+
+function restart() {
+  restartTimeout = setTimeout(start, RECONNECT_INTERVAL) // eslint-disable-line no-user-before-define
+}
+
+function startEventStream() {
   getEventStream('status')
     .then(newStream => {
       stream = newStream
-      stream.on('event', event => {
-        getConfig()
-          .then(config => {
-            if (!config.particleDeviceName) {
-              stream.abort()
-            }
-            else {
-              status(event)
-            }
-          })
-      })
+      stream.on('event', event => status(event))
       stream.on('end', (err) => {
         console.error(err) // eslint-disable-line no-console
-        setTimeout(start, RECONNECT_INTERVAL)
+        restart()
       })
     })
     .catch(err => {
       console.error(err) // eslint-disable-line no-console
-      setTimeout(start, RECONNECT_INTERVAL)
+      restart()
     })
 }
 

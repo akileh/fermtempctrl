@@ -9,6 +9,7 @@ import pid from './pid'
 import transmitter from './transmitter'
 import temperatures from './temperatures'
 import devices from './devices'
+import rom from './rom'
 
 export default combineReducers({
   status,
@@ -20,5 +21,6 @@ export default combineReducers({
   pid,
   transmitter,
   temperatures,
-  devices
+  devices,
+  rom
 })

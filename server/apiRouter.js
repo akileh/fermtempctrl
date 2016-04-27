@@ -191,6 +191,14 @@ export default function apiRouter() {
       .catch(next)
   })
 
+  /* TODO
+  router.post('/api/flashrom', (req, res, next) => {
+    flashRom()
+      .then(flasRes => res.json(flasRes))
+      .catch(next)
+  })
+  */
+
   router.all('/api/*', (req, res, next) => {
     next(new Error('unknown api route'))
   })

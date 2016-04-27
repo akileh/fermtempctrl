@@ -14,7 +14,10 @@
     "start": "NODE_ENV=production node build/index.js",
     "start-dev": "NODE_ENV=development nodemon --exec node server/dev.js --watch server -e js,json,html",
     "lint": "eslint server/ client/",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "particle-login": "particle cloud login",
+    "particle-logout": "particle cloud logout",
+    "particle-flash": "particle flash $DEVICE ./particle"
   },
   "babel": {
     "presets": [
@@ -43,6 +46,7 @@
     "material-ui": "0.15.0-alpha.2",
     "moment": "2.12.0",
     "particle-api-js": "5.2.6",
+    "particle-cli": "^1.11.0",
     "pg": "4.5.3",
     "react": "0.14.8",
     "react-dom": "0.14.8",

@@ -4,7 +4,6 @@ import Divider from 'material-ui/lib/divider'
 import Paper from 'material-ui/lib/paper'
 import List from 'material-ui/lib/lists/list'
 import ListItem from 'material-ui/lib/lists/list-item'
-import Subheader from 'material-ui/lib/Subheader'
 import RaisedButton from 'material-ui/lib/raised-button'
 
 class Devices extends React.Component {

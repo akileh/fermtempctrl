@@ -1,10 +1,9 @@
 import React from 'react'
 import RaisedButton from 'material-ui/lib/raised-button'
-import { browserHistory } from 'react-router'
+import { browserHistory, Link } from 'react-router'
 import AppBarContainer from './appbarContainer'
 import Content from './content'
 import Error from './error'
-import { Link } from 'react-router'
 import Loading from './loading'
 
 class Transmitter extends React.Component {

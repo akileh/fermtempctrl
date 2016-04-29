@@ -1,7 +1,6 @@
 import express from 'express'
 import cacheControl from './cacheControl'
-import knex from './db'
-import { getConfig, updateConfig } from './db'
+import knex, { getConfig, updateConfig } from './db'
 import { authenticate, getVariable, callFunction, parseStatus, listDevices } from './particle'
 
 function configToJson(config) {

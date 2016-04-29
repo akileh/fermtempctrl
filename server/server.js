@@ -23,7 +23,7 @@ app.use(compression())
 // dev stuff
 if (process.env.NODE_ENV === 'development') {
   // log request stats
-  app.use(require('morgan')('dev'))
+  app.use(require('morgan')('dev')) // eslint-disable-line global-require
 
   // delay response
   if (getAppConfig('responseDelay')) {
@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
   }
 
   // redirect bundle to webpack (hot reload)
-  const httpProxy = require('http-proxy')
+  const httpProxy = require('http-proxy') // eslint-disable-line global-require
   app.get(/^\/bundle/, (req, res, next) => {
     httpProxy.createProxyServer().web(req, res,
       { target: `http://localhost:${process.env.npm_package_config_webpackPort}` },

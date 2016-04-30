@@ -19,6 +19,10 @@ Connect the 433MHz transmitter to D0 and DS1820 temperature sensor to D2.
 
 Currently only the Nexa power socket is supported (since it's the one I use) but adding similar devices shouldn't be hard.
 
+## Depedencies
+
+[Node.js](https://nodejs.org)
+
 ## Flashing particle device
 
 Flashing via ui is currently not working, in the mean time do this:

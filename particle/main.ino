@@ -139,7 +139,7 @@ void loop() {
         publish("loop", String(output) + ", " + String(windowLocation / windowLength) + "," + String(windowLocation) + "," + String(windowLength));
 
         if(tuning == 1 || (controlled == 1 && transmitterPaired == 1)) {
-            if(windowLocation / windowLength < output) {
+            if(output > 0 && windowLocation / windowLength <= output) {
                 cool();
             }
             else {
@@ -164,9 +164,7 @@ void publish(String name, String value) {
 
 void none() {
     status = STATUS_NONE;
-    deviceOff();
-    lastHeat = Time.now();
-    lastCool = Time.now();
+    heat();
 }
 
 void heat() {

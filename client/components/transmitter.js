@@ -1,5 +1,5 @@
 import React from 'react'
-import RaisedButton from 'material-ui/lib/raised-button'
+import RaisedButton from 'material-ui/RaisedButton'
 import { browserHistory, Link } from 'react-router'
 import AppBarContainer from './appbarContainer'
 import Content from './content'
@@ -70,14 +70,14 @@ class Transmitter extends React.Component {
           label='Everything works'
           primary
           onClick={() => this.props.setTransmitter({ transmitterPaired: true })}
-          fullWidth
+          style={{ width: '100%' }}
           />
         <br /><br />
         <RaisedButton
           label={'It doesn\'t work'}
           secondary
           onClick={() => this.props.setTransmitter({ transmitterPaired: false })}
-          fullWidth
+          style={{ width: '100%' }}
           />
       </div>
     )

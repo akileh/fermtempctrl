@@ -5,7 +5,7 @@ import { getStatus } from '../actions/status'
 import { getAuthentication } from '../actions/authentication'
 import { setControlled } from '../actions/controlled'
 import { setTargetTemperature } from '../actions/targetTemperature'
-import { toggleLeftNav } from '../actions/leftNav'
+import { toggleDrawer } from '../actions/drawer'
 
 const mapStateToProps = state => {
   return {
@@ -19,7 +19,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   getStatus,
   getAuthentication,
-  toggleLeftNav,
+  toggleDrawer,
   setControlled,
   setTargetTemperature
 }, dispatch)

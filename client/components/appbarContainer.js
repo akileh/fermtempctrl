@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import AppBar from './appbar'
-import { toggleLeftNav } from '../actions/leftNav'
+import { toggleDrawer } from '../actions/drawer'
 import { bindActionCreators } from 'redux'
 
-const mapDispatchToProps = dispatch => bindActionCreators({ toggleLeftNav }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ toggleDrawer }, dispatch)
 
 const AppBarContainer = connect(
   null,

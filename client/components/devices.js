@@ -1,10 +1,9 @@
 import React from 'react'
 import Loading from './loading'
-import Divider from 'material-ui/lib/divider'
-import Paper from 'material-ui/lib/paper'
-import List from 'material-ui/lib/lists/list'
-import ListItem from 'material-ui/lib/lists/list-item'
-import RaisedButton from 'material-ui/lib/raised-button'
+import Divider from 'material-ui/Divider'
+import Paper from 'material-ui/Paper'
+import { List, ListItem } from 'material-ui/List'
+import RaisedButton from 'material-ui/RaisedButton'
 
 class Devices extends React.Component {
   constructor(props) {
@@ -46,7 +45,7 @@ class Devices extends React.Component {
           label='Clear authentication'
           secondary
           onClick={() => this.props.setAuthentication(null) }
-          fullWidth
+          style={{ width: '100%' }}
           />
       </div>
     )

@@ -1,14 +1,13 @@
 import React from 'react'
-import LeftNav from 'material-ui/lib/left-nav'
+import Drawer from 'material-ui/Drawer'
 import { browserHistory } from 'react-router'
-import List from 'material-ui/lib/lists/list'
-import ListItem from 'material-ui/lib/lists/list-item'
-import IconStatus from 'material-ui/lib/svg-icons/places/kitchen'
-import IconTransmitter from 'material-ui/lib/svg-icons/action/settings-remote'
-import IconParticle from 'material-ui/lib/svg-icons/hardware/memory'
-import IconPid from 'material-ui/lib/svg-icons/image/tune'
-import IconChart from 'material-ui/lib/svg-icons/action/timeline'
-import MuiThemeProvider from 'material-ui/lib/MuiThemeProvider'
+import { List, ListItem } from 'material-ui/List'
+import IconStatus from 'material-ui/svg-icons/places/kitchen'
+import IconTransmitter from 'material-ui/svg-icons/action/settings-remote'
+import IconParticle from 'material-ui/svg-icons/hardware/memory'
+import IconPid from 'material-ui/svg-icons/image/tune'
+import IconChart from 'material-ui/svg-icons/action/timeline'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import theme from '../theme'
 
 const routes = [
@@ -42,16 +41,16 @@ const routes = [
 class App extends React.Component {
   selectItem(path) {
     browserHistory.push(path)
-    this.props.toggleLeftNav()
+    this.props.toggleDrawer()
   }
   render() {
     return (
       <MuiThemeProvider muiTheme={theme}>
         <div>
-          <LeftNav
-            open={this.props.leftNavOpen}
+          <Drawer
+            open={this.props.drawerOpen}
             docked={false}
-            onRequestChange={this.props.toggleLeftNav}
+            onRequestChange={this.props.toggleDrawer}
             >
             <List>
             {routes.map(route => {
@@ -65,7 +64,7 @@ class App extends React.Component {
               )
             })}
             </List>
-          </LeftNav>
+          </Drawer>
           <div>{this.props.children}</div>
         </div>
       </MuiThemeProvider>
@@ -74,8 +73,8 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  leftNavOpen: React.PropTypes.bool,
-  toggleLeftNav: React.PropTypes.func,
+  drawerOpen: React.PropTypes.bool,
+  toggleDrawer: React.PropTypes.func,
   children: React.PropTypes.object
 }
 

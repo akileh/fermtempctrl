@@ -1,19 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Card from 'material-ui/lib/card/card'
-import CardTitle from 'material-ui/lib/card/card-title'
-import CardText from 'material-ui/lib/card/card-text'
+import { Card, CardTitle, CardText } from 'material-ui/Card'
 import AppBarContainer from './appbarContainer'
 import Content from './content'
 import Error from './error'
-import RaisedButton from 'material-ui/lib/raised-button'
+import RaisedButton from 'material-ui/RaisedButton'
 import { Link } from 'react-router'
 import moment from 'moment'
-import Dialog from 'material-ui/lib/dialog'
-import FlatButton from 'material-ui/lib/flat-button'
-import TextField from 'material-ui/lib/text-field'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import TextField from 'material-ui/TextField'
 import Loading from './loading'
-import Styles from 'material-ui/lib/styles'
+import { red500 } from 'material-ui/styles/colors'
 
 const STATUS = {
   0: 'none',
@@ -63,7 +61,8 @@ class Status extends React.Component {
         <RaisedButton
           primary
           label='Set target temperature'
-          fullWidth
+          style={{ width: '100%' }}
+          style={{ width: '100%' }}
           onClick={() => this.setState({ settingTargetTemperature: true })}
           />
         <br /><br />
@@ -71,7 +70,7 @@ class Status extends React.Component {
           primary
           disabled={this.props.controlled.loading}
           label={turnLabel}
-          fullWidth
+          style={{ width: '100%' }}
           onClick={() => this.props.setControlled(!this.props.status.controlled)}
           />
       </div>
@@ -86,7 +85,7 @@ class Status extends React.Component {
               <RaisedButton
                 primary
                 label='Setup device'
-                fullWidth
+                style={{ width: '100%' }}
                 />
             </Link>
           </div>
@@ -97,7 +96,7 @@ class Status extends React.Component {
               <RaisedButton
                 primary
                 label='Setup transmitter'
-                fullWidth
+                style={{ width: '100%' }}
                 />
             </Link>
           </div>
@@ -204,7 +203,7 @@ class Status extends React.Component {
           <CardTitle
             title={title}
             subtitle={subtitle}
-            titleColor={isStatusStale ? Styles.Colors.red500 : null}
+            titleColor={isStatusStale ? red500 : null}
             />
           <CardText style={{ textAlign: 'center' }}>
             <span style={{ fontSize: '18px' }}>Current temperature</span>
@@ -244,7 +243,7 @@ class Status extends React.Component {
             }}
             ref='targetTemperature'
             defaultValue={this.props.status.targetTemperature}
-            fullWidth
+            style={{ width: '100%' }}
             onKeyDown={event => this.setTargetTemperature(event) }
             />
         </Dialog>

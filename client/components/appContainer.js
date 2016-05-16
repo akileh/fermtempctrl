@@ -1,15 +1,15 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import App from './app'
-import { toggleLeftNav } from '../actions/leftNav'
+import { toggleDrawer } from '../actions/drawer.js'
 
-const mapStateToProps = ({ leftNavOpen }) => {
+const mapStateToProps = ({ drawerOpen }) => {
   return {
-    leftNavOpen
+    drawerOpen
   }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ toggleLeftNav }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ toggleDrawer }, dispatch)
 
 const AppContainer = connect(
   mapStateToProps,

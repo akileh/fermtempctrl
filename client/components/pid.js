@@ -1,6 +1,6 @@
 import React from 'react'
-import RaisedButton from 'material-ui/lib/raised-button'
-import TextField from 'material-ui/lib/text-field'
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
 import AppBarContainer from './appbarContainer'
 import Content from './content'
 import Error from './error'
@@ -33,21 +33,21 @@ class Pid extends React.Component {
           floatingLabelText='P'
           disabled={this.props.pid.tuning}
           ref='p'
-          fullWidth
+          style={{ width: '100%' }}
           defaultValue={this.props.pid.p}
           />
         <TextField
           floatingLabelText='I'
           disabled={this.props.pid.tuning}
           ref='i'
-          fullWidth
+          style={{ width: '100%' }}
           defaultValue={this.props.pid.i}
           />
         <TextField
           floatingLabelText='D'
           disabled={this.props.pid.tuning}
           ref='d'
-          fullWidth
+          style={{ width: '100%' }}
           defaultValue={this.props.pid.d}
           />
         <RaisedButton
@@ -55,7 +55,7 @@ class Pid extends React.Component {
           disabled={this.props.pid.tuning}
           primary
           onClick={() => this.setPid()}
-          fullWidth
+          style={{ width: '100%' }}
           />
         <br />
         <br />
@@ -63,7 +63,7 @@ class Pid extends React.Component {
           label={this.props.pid.tuning ? 'Stop autotune' : 'Start autotune'}
           primary
           onClick={() => this.props.setAutotune(this.props.pid.tuning ? 'off' : 'on')}
-          fullWidth
+          style={{ width: '100%' }}
           />
       </div>
     )

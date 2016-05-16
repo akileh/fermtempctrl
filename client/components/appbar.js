@@ -1,13 +1,12 @@
 import React from 'react'
-import AppBar from 'material-ui/lib/app-bar'
+import AppBar from 'material-ui/AppBar'
 
 const App = props => {
   return (
     <AppBar
       title={window.app ? window.app.name : ''}
       showMenuIconButton
-      onLeftIconButtonTouchTap={props.toggleLeftNav}
-      style={{ flexWrap: 'wrap' }}
+      onLeftIconButtonTouchTap={props.toggleDrawer}
       >
       {props.children}
     </AppBar>
@@ -15,7 +14,7 @@ const App = props => {
 }
 
 App.propTypes = {
-  toggleLeftNav: React.PropTypes.func,
+  toggleDrawer: React.PropTypes.func,
   children: React.PropTypes.object
 }
 

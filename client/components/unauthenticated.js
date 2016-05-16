@@ -1,6 +1,6 @@
 import React from 'react'
-import RaisedButton from 'material-ui/lib/raised-button'
-import TextField from 'material-ui/lib/text-field'
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
 
 class Unauthenticated extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class Unauthenticated extends React.Component {
           floatingLabelText={'Access token'}
           ref='accessToken'
           type='password'
-          fullWidth
+          style={{ width: '100%' }}
           onKeyDown={event => this.setAuthentication(event)}
           />
         <p style={{ textAlign: 'center' }}>Or</p>
@@ -31,21 +31,21 @@ class Unauthenticated extends React.Component {
           floatingLabelText={'Username'}
           ref='username'
           type='text'
-          fullWidth
+          style={{ width: '100%' }}
           onKeyDown={event => this.setAuthentication(event)}
           />
         <TextField
           floatingLabelText={'Password'}
           ref='password'
           type='password'
-          fullWidth
+          style={{ width: '100%' }}
           onKeyDown={event => this.setAuthentication(event)}
           />
         <RaisedButton
           label='Save'
           primary
           onClick={this.setAuthentication}
-          fullWidth
+          style={{ width: '100%' }}
           />
       </div>
     )

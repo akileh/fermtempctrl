@@ -1,6 +1,6 @@
 import React from 'react'
-import RaisedButton from 'material-ui/lib/raised-button'
-import TextField from 'material-ui/lib/text-field'
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
 
 function Authenticated(props) {
   return (
@@ -8,14 +8,14 @@ function Authenticated(props) {
       <TextField
         floatingLabelText={'Device name'}
         disabled
-        fullWidth
+        style={{ width: '100%' }}
         defaultValue={props.authentication.particleDeviceName}
         />
       <RaisedButton
         label='Remove device'
         secondary
         onClick={() => props.setDevice(null) }
-        fullWidth
+        style={{ width: '100%' }}
         />
       <br />
       <br />
@@ -23,7 +23,7 @@ function Authenticated(props) {
         label='Clear authentication'
         secondary
         onClick={() => props.setAuthentication(null) }
-        fullWidth
+        style={{ width: '100%' }}
         />
       <br />
       <br />
@@ -33,7 +33,7 @@ function Authenticated(props) {
         onClick={() => {
           window.alert('flashing currently now working, flash manually (check README)') // eslint-disable-line no-alert
         }}
-        fullWidth
+        style={{ width: '100%' }}
         />
     </div>
   )

@@ -1,5 +1,5 @@
 import React from 'react'
-import RaisedButton from 'material-ui/lib/raised-button'
+import RaisedButton from 'material-ui/RaisedButton'
 
 const Error = props => {
   return (
@@ -17,7 +17,7 @@ const Error = props => {
         <RaisedButton
           label='Reload'
           primary
-          fullWidth
+          style={{ width: '100%' }}
           onClick={() => window.location.reload() }
           />
       : null}

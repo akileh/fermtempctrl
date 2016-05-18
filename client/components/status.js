@@ -62,7 +62,6 @@ class Status extends React.Component {
           primary
           label='Set target temperature'
           style={{ width: '100%' }}
-          style={{ width: '100%' }}
           onClick={() => this.setState({ settingTargetTemperature: true })}
           />
         <br /><br />

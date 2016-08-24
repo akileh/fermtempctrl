@@ -2,14 +2,14 @@ import fs from 'fs'
 import http from 'http'
 import path from 'path'
 import express from 'express'
-import { initIo } from './socketio'
 import compression from 'compression'
 import bodyParser from 'body-parser'
 import basicAuth from 'basic-auth'
+import { template } from 'lodash'
+import { initIo } from './socketio'
 import error from './error'
 import { getAppConfig } from './appConfig'
 import apiRouter from './apiRouter'
-import { template } from 'lodash'
 import cacheControl from './cacheControl'
 import './db'
 import './particleEventListener'
@@ -21,6 +21,7 @@ app.use(bodyParser.json())
 app.use(compression())
 
 // dev stuff
+/* eslint-disable import/no-extraneous-dependencies */
 if (process.env.NODE_ENV === 'development') {
   // log request stats
   app.use(require('morgan')('dev')) // eslint-disable-line global-require
@@ -34,6 +35,7 @@ if (process.env.NODE_ENV === 'development') {
 
   // redirect bundle to webpack (hot reload)
   const httpProxy = require('http-proxy') // eslint-disable-line global-require
+
   app.get(/^\/bundle/, (req, res, next) => {
     httpProxy.createProxyServer().web(req, res,
       { target: `http://localhost:${process.env.npm_package_config_webpackPort}` },
@@ -41,6 +43,7 @@ if (process.env.NODE_ENV === 'development') {
     )
   })
 }
+/* eslint-enable import/no-extraneous-dependencies */
 else {
   // redirect http -> https (
   app.use((req, res, next) => {

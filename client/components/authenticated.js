@@ -31,7 +31,7 @@ function Authenticated(props) {
         label='Flash rom'
         primary
         onClick={() => {
-          window.alert('flashing currently now working, flash manually (check README)') // eslint-disable-line no-alert
+          props.flashRom()
         }}
         style={{ width: '100%' }}
         />
@@ -45,8 +45,7 @@ Authenticated.propTypes = {
   }),
   setAuthentication: React.PropTypes.func,
   setDevice: React.PropTypes.func,
-  // TODO
-  // flashRom: React.PropTypes.func
+  flashRom: React.PropTypes.func
 }
 
 export default Authenticated

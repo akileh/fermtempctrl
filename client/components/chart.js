@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactHighcharts from 'react-highcharts'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
+import Highcharts from 'highcharts'
+import { browserHistory } from 'react-router'
 import Content from './content'
 import AppBarContainer from './appbarContainer'
 import Error from './error'
-import DropDownMenu from 'material-ui/DropDownMenu'
-import MenuItem from 'material-ui/MenuItem'
 import Loading from './loading'
-import Highcharts from 'highcharts'
-import { browserHistory } from 'react-router'
 
 Highcharts.setOptions({
   global: {
@@ -55,22 +55,22 @@ class Chart extends React.Component {
       default:
       case 'hour':
         return this.props.getTemperatures({
-          from: now - count * 60 * 60 * 1000,
+          from: now - (count * 60 * 60 * 1000),
           to
         })
       case 'day':
         return this.props.getTemperatures({
-          from: now - count * 24 * 60 * 60 * 1000,
+          from: now - (count * 24 * 60 * 60 * 1000),
           to
         })
       case 'week':
         return this.props.getTemperatures({
-          from: now - count * 7 * 24 * 60 * 60 * 1000,
+          from: now - (count * 7 * 24 * 60 * 60 * 1000),
           to
         })
       case 'month':
         return this.props.getTemperatures({
-          from: now - count * 30 * 24 * 60 * 60 * 1000,
+          from: now - (count * 30 * 24 * 60 * 60 * 1000),
           to
         })
     }
@@ -86,9 +86,9 @@ class Chart extends React.Component {
 
     const temperatures = this.props.temperatures.data
     // flatten all possible min/max values
-    const temperatureReadings = [].concat.apply([],
-      temperatures.map(({ temperature, targetTemperature }) => [temperature, targetTemperature])
-    )
+    const temperatureReadings = temperatures
+        .map(({ temperature, targetTemperature }) => [temperature, targetTemperature])
+        .reduce((a, b) => a.concat(b))
     const minTemperature = Math.min(...temperatureReadings) - 2
     const maxTemperature = Math.max(...temperatureReadings) + 1
 
@@ -96,7 +96,7 @@ class Chart extends React.Component {
     const missing = []
     this.props.temperatures.data.forEach((temperature, index) => {
       const nextTemperature = temperatures.length > index + 1 ? temperatures[index + 1] : null
-      if (nextTemperature && nextTemperature.createdAt > temperature.createdAt + 5 * 60 * 1000) {
+      if (nextTemperature && nextTemperature.createdAt > temperature.createdAt + (5 * 60 * 1000)) {
         missing.push({
           createdAt: temperature.createdAt + 1000
         })

@@ -1,17 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Card, CardTitle, CardText } from 'material-ui/Card'
-import AppBarContainer from './appbarContainer'
-import Content from './content'
-import Error from './error'
 import RaisedButton from 'material-ui/RaisedButton'
 import { Link } from 'react-router'
 import moment from 'moment'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import TextField from 'material-ui/TextField'
-import Loading from './loading'
 import { red500 } from 'material-ui/styles/colors'
+import Loading from './loading'
+import AppBarContainer from './appbarContainer'
+import Content from './content'
+import Error from './error'
 
 const STATUS = {
   0: 'none',
@@ -148,7 +148,7 @@ class Status extends React.Component {
       temperature = `${this.props.status.temperature} °C`
     }
 
-    const isStatusStale = createdAt < (now - 20 * 1000)
+    const isStatusStale = createdAt < (now - (20 * 1000))
     let title
     let subtitle
     if (this.props.status.loading) {
@@ -159,23 +159,21 @@ class Status extends React.Component {
       title = 'Error loading status'
       subtitle = '\u00a0'
     }
+    else if (isStatusStale) {
+      title = 'Waiting for up to date data..'
+      subtitle = moment(createdAt).format('YYYY-MM-DD HH:mm:ss')
+    }
     else {
-      if (isStatusStale) {
-        title = 'Waiting for up to date data..'
-        subtitle = moment(createdAt).format('YYYY-MM-DD HH:mm:ss')
+      title = `Status: ${STATUS[this.props.status.status]}`
+      if (this.props.status.tuning) {
+        title += ' (autotuning)'
+      }
+      const diff = now - createdAt
+      if (diff < 10000) {
+        subtitle = 'Just now'
       }
       else {
-        title = `Status: ${STATUS[this.props.status.status]}`
-        if (this.props.status.tuning) {
-          title += ' (autotuning)'
-        }
-        const diff = now - createdAt
-        if (diff < 10000) {
-          subtitle = 'Just now'
-        }
-        else {
-          subtitle = `${parseInt(diff / 1000, 10)} seconds ago`
-        }
+        subtitle = `${parseInt(diff / 1000, 10)} seconds ago`
       }
     }
 
@@ -231,6 +229,7 @@ class Status extends React.Component {
             onFocus={() => {
               // move caret to end after focus
               setTimeout(() => {
+                // eslint-disable-next-line react/no-find-dom-node
                 const nodes = ReactDOM.findDOMNode(this.refs.targetTemperature).getElementsByTagName('input')
                 if (nodes.length > 0) {
                   const node = nodes[0]

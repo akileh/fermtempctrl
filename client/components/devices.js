@@ -1,9 +1,9 @@
 import React from 'react'
-import Loading from './loading'
 import Divider from 'material-ui/Divider'
 import Paper from 'material-ui/Paper'
 import { List, ListItem } from 'material-ui/List'
 import RaisedButton from 'material-ui/RaisedButton'
+import Loading from './loading'
 
 class Devices extends React.Component {
   constructor(props) {

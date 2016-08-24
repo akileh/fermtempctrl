@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import AppBar from './appbar'
 import { toggleDrawer } from '../actions/drawer'
-import { bindActionCreators } from 'redux'
 
 const mapDispatchToProps = dispatch => bindActionCreators({ toggleDrawer }, dispatch)
 

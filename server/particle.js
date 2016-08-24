@@ -101,7 +101,6 @@ export function parseStatus(status) {
   }
 }
 
-/* TODO
 export function flashRom() {
   return Promise.all(
     [
@@ -113,18 +112,8 @@ export function flashRom() {
         deviceId,
         auth,
         files: {
-          'main.ino': './particle/main.ino',
-          'PID-AutoTune.cpp': './particle/PID-Autotune/PID-AutoTune.cpp',
-          'PID-AutoTune.h': './particle/PID-Autotune/PID-AutoTune.h',
-          'NexaCtrl.cpp': './particle/NexaCtrl/NexaCtrl.cpp',
-          'NexaCtrl.h': './particle/NexaCtrl/NexaCtrl.h',
-          'pid.cpp': './particle/pid/pid.cpp',
-          'pid.h': './particle/pid/pid.h',
-          'spark-dallas-temperature.cpp': './particle/spark-dallas-temperature/spark-dallas-temperature.cpp',
-          'spark-dallas-temperature.h': './particle/spark-dallas-temperature/spark-dallas-temperature.h',
-          'OneWire.cpp': './particle/OneWire/OneWire.cpp',
-          'OneWire.h': './particle/OneWire/OneWire.h'
+          wat: './particle/main.ino'
         }
-      })})
+      })
+    })
 }
-*/

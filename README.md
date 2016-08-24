@@ -25,7 +25,7 @@ Currently only the Nexa power socket is supported (since it's the one I use) but
 
 ## Flashing particle device
 
-Flashing via ui is currently not working, in the mean time do this:
+If flashing via ui doesn't work:
 
     npm run particle-login
     // where foo is your device name

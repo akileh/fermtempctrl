@@ -1,5 +1,5 @@
-import fetch from '../fetch'
 import { browserHistory } from 'react-router'
+import fetch from '../fetch'
 
 export const TURN_TRANSMITTER = 'TURN_TRANSMITTER'
 export const TURN_TRANSMITTER_SUCCESS = 'TURN_TRANSMITTER_SUCCESS'

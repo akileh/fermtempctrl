@@ -1,7 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import store from './store'
 import { browserHistory, Router, Route, IndexRoute } from 'react-router'
+import store from './store'
 import AppContainer from './components/appContainer'
 import StatusContainer from './components/statusContainer'
 import TransmitterContainer from './components/transmitterContainer'

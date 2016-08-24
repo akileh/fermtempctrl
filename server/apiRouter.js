@@ -1,7 +1,7 @@
 import express from 'express'
 import cacheControl from './cacheControl'
 import knex, { getConfig, updateConfig } from './db'
-import { authenticate, getVariable, callFunction, parseStatus, listDevices } from './particle'
+import { authenticate, getVariable, callFunction, parseStatus, listDevices, flashRom } from './particle'
 
 function configToJson(config) {
   return {
@@ -20,7 +20,7 @@ export default function apiRouter() {
 
   router.get('/api/temperatures', (req, res, next) => {
     const {
-      from = Date.now() - 24 * 60 * 60 * 1000,
+      from = Date.now() - (24 * 60 * 60 * 1000),
         to = Date.now()
     } = req.query
     knex('temperatures')
@@ -190,13 +190,11 @@ export default function apiRouter() {
       .catch(next)
   })
 
-  /* TODO
   router.post('/api/flashrom', (req, res, next) => {
     flashRom()
       .then(flasRes => res.json(flasRes))
       .catch(next)
   })
-  */
 
   router.all('/api/*', (req, res, next) => {
     next(new Error('unknown api route'))

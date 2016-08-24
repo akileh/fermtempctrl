@@ -9,7 +9,7 @@ const appConfig = {
   maxDbRows: null
 }
 
-export function getAppConfig(key) {
+export function getAppConfig(key) { // eslint-disable-line import/prefer-default-export
   const value = process.env[`ft_${key}`] || appConfig[key]
   if (typeof value === 'string') {
     if (!value) {

@@ -45,7 +45,7 @@
     "material-ui": "0.15.0",
     "moment": "2.13.0",
     "particle-api-js": "5.2.7",
-    "particle-cli": "^1.11.0",
+    "particle-cli": "1.11.0",
     "pg": "4.5.5",
     "react": "15.0.2",
     "react-dom": "15.0.2",

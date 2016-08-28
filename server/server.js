@@ -20,44 +20,6 @@ initIo(server)
 app.use(bodyParser.json())
 app.use(compression())
 
-// dev stuff
-/* eslint-disable import/no-extraneous-dependencies */
-if (process.env.NODE_ENV === 'development') {
-  // log request stats
-  app.use(require('morgan')('dev')) // eslint-disable-line global-require
-
-  // delay response
-  if (getAppConfig('responseDelay')) {
-    app.use(/^\/api/, (req, res, next) => {
-      setTimeout(next, getAppConfig('responseDelay'))
-    })
-  }
-
-  // redirect bundle to webpack (hot reload)
-  const httpProxy = require('http-proxy') // eslint-disable-line global-require
-
-  app.get(/^\/bundle/, (req, res, next) => {
-    httpProxy.createProxyServer().web(req, res,
-      { target: `http://localhost:${process.env.npm_package_config_webpackPort}` },
-      next
-    )
-  })
-}
-/* eslint-enable import/no-extraneous-dependencies */
-else {
-  // redirect http -> https (
-  app.use((req, res, next) => {
-    if (req.headers['x-forwarded-proto'] === 'http') {
-      res.redirect(`https://${req.host}${req.url}`)
-    }
-    else {
-      next()
-    }
-  })
-
-  app.get('/bundle/*', express.static(path.join(__dirname, './public')))
-}
-
 // basic auth
 if (getAppConfig('authEnabled')) {
   app.use((req, res, next) => {
@@ -72,7 +34,59 @@ if (getAppConfig('authEnabled')) {
   })
 }
 
+// redirect service worker from root
+app.get('/sw.js', (req, res, next) => {
+  req.url = '/bundle/sw.js' // eslint-disable-line no-param-reassign
+  next()
+})
+
+
+// dev stuff
+if (process.env.NODE_ENV === 'development') {
+  // log request stats
+  app.use(require('morgan')('dev')) // eslint-disable-line global-require, import/no-extraneous-dependencies
+
+  // delay response
+  if (getAppConfig('responseDelay')) {
+    app.use(/^\/api/, (req, res, next) => {
+      setTimeout(next, getAppConfig('responseDelay'))
+    })
+  }
+
+  // redirect bundle to webpack (hot reload)
+  const httpProxy = require('http-proxy') // eslint-disable-line global-require, import/no-extraneous-dependencies
+
+  app.get(/^\/bundle/, cacheControl(false), (req, res, next) => {
+    httpProxy.createProxyServer().web(req, res,
+      { target: `http://localhost:${process.env.npm_package_config_webpackPort}` },
+      next
+    )
+  })
+}
+else {
+  // redirect http -> https (
+  app.use((req, res, next) => {
+    if (req.headers['x-forwarded-proto'] === 'http') {
+      res.redirect(`https://${req.host}${req.url}`)
+    }
+    else {
+      next()
+    }
+  })
+
+  app.get('/bundle/*', express.static(path.join(__dirname, './public')))
+}
+
 app.use(apiRouter())
+
+const manifest = template(fs.readFileSync(path.resolve(__dirname, 'manifest.json')))
+app.use('/manifest.json', cacheControl(false), (req, res) => {
+  res.set('content-type', 'application/manifest+json')
+  res.send(manifest({
+    version: getAppConfig('version'),
+    gcmSenderId: getAppConfig('gcmSenderId')
+  }))
+})
 
 // default to index.html
 const index = template(fs.readFileSync(path.resolve(__dirname, 'index.html')))

@@ -49,4 +49,24 @@ else if (process.env.NODE_ENV === 'production') {
   ]
 }
 
-module.exports = config
+const swConfig = {
+  entry: [
+    './client/sw.js'
+  ],
+  output: {
+    path: path.join(__dirname, 'build/public/bundle'),
+    publicPath: '/bundle',
+    filename: 'sw.js'
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        loaders: ['babel']
+      }
+    ]
+  }
+}
+
+module.exports = [config, swConfig]

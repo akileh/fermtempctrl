@@ -7,6 +7,7 @@ import IconTransmitter from 'material-ui/svg-icons/action/settings-remote'
 import IconParticle from 'material-ui/svg-icons/hardware/memory'
 import IconPid from 'material-ui/svg-icons/image/tune'
 import IconChart from 'material-ui/svg-icons/action/timeline'
+import IconNotifications from 'material-ui/svg-icons/alert/error-outline'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import theme from '../theme'
 
@@ -35,6 +36,11 @@ const routes = [
     title: 'Particle',
     path: '/particle',
     icon: <IconParticle />
+  },
+  {
+    title: 'Notifications',
+    path: '/notifications',
+    icon: <IconNotifications />
   }
 ]
 

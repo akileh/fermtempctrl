@@ -1,0 +1,6 @@
+{  
+  "name": "Fermtempctrl",  
+  "manifest_version": 2,
+  "version": "<%= version %>",
+  "gcm_sender_id": "<%= gcmSenderId %>"
+}

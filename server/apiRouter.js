@@ -1,7 +1,9 @@
 import express from 'express'
+import webPush from 'web-push'
 import cacheControl from './cacheControl'
 import knex, { getConfig, updateConfig } from './db'
 import { authenticate, getVariable, callFunction, parseStatus, listDevices, flashRom } from './particle'
+import { getAppConfig } from './appConfig'
 
 function configToJson(config) {
   return {
@@ -194,6 +196,30 @@ export default function apiRouter() {
     flashRom()
       .then(flasRes => res.json(flasRes))
       .catch(next)
+  })
+
+  router.post('/api/push/test', (req, res, next) => {
+    if (!req.body || !req.body.endpoint || !req.body.keys) {
+      next(new Error('invalid params'))
+    }
+    else {
+      webPush.setGCMAPIKey(getAppConfig('gcmApiKey'))
+      webPush.sendNotification(req.body.endpoint,
+        {
+          TTL: 120,
+          userPublicKey: req.body.keys.p256dh,
+          userAuth: req.body.keys.auth,
+          payload: JSON.stringify({
+            title: 'Test',
+            body: 'Click me!'
+          })
+        })
+        .then(() => res.json({ success: true }))
+        .catch(err => {
+          console.error(err) // eslint-disable-line no-console
+          next(err)
+        })
+    }
   })
 
   router.all('/api/*', (req, res, next) => {

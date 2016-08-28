@@ -8,6 +8,7 @@ import TransmitterContainer from './components/transmitterContainer'
 import AuthenticationContainer from './components/authenticationContainer'
 import PidContainer from './components/pidContainer'
 import ChartContainer from './components/chartContainer'
+import NotificationsContainer from './components/notificationsContainer'
 
 export default (
   <Provider store={store}>
@@ -19,6 +20,7 @@ export default (
         <Route path='pid' component={PidContainer} />
         <Route path='transmitter' component={TransmitterContainer} />
         <Route path='particle' component={AuthenticationContainer} />
+        <Route path='notifications' component={NotificationsContainer} />
       </Route>
     </Router>
   </Provider>

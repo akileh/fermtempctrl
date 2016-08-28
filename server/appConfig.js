@@ -6,7 +6,8 @@ const appConfig = {
   authUser: null,
   authPass: null,
   temperatureSaveInterval: 60 * 1000,
-  maxDbRows: null
+  maxDbRows: null,
+  version: process.env.npm_package_version
 }
 
 export function getAppConfig(key) { // eslint-disable-line import/prefer-default-export
